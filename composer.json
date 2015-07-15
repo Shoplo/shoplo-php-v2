@@ -1,0 +1,8 @@
+{
+    "name": "shoplo/client",
+    "autoload": {
+        "psr-0": {
+            "Shoplo": "src/"
+        }
+    }
+}
