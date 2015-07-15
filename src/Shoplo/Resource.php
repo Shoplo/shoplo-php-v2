@@ -60,7 +60,6 @@ class Resource
 
             $this->client->fetch(SHOPLO_API_URL.$uri, $body, $method);
             $result = json_decode( $this->client->getLastResponse(), true);
-
         }
         catch( \Exception $e )
         {

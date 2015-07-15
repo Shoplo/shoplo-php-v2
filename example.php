@@ -61,14 +61,14 @@ try
             'tags'              =>  'penne,makaron,zdrowy'
         );
 
-//        $product = $shoploApi->product->create($productInfo);
+//        $product = $shoploApi->product->modify(6, ['name'=>'test api v2']);
 //        print_r($product);exit;
         # retrieve all products
-        #$data = $shoploApi->product->retrieve();
+        $data = $shoploApi->product->retrieve();
         # count all products
 //        $data = $shoploApi->product->count();
         #retrieve all categories
-        $data = $shoploApi->category->retrieve();
+//        $data = $shoploApi->category->retrieve();
         #retrieve shop data
 //        $data = $shoploApi->shop->retrieve();
         print_r($data);exit;

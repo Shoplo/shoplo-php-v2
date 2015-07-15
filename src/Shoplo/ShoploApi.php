@@ -237,11 +237,10 @@ class ShoploApi
         try
         {
             $response = $client->getRequestToken(SHOPLO_API_URL.SHOPLO_REQUEST_TOKEN_URI, CALLBACK_URL);
-
         }
         catch( \Exception $e )
         {
-            print_r($e);exit;
+            throw new ShoploException($e->getMessage());
         }
 
         $client->setToken($response['oauth_token'], $response['oauth_token_secret']);
@@ -272,11 +271,10 @@ class ShoploApi
         try
         {
             $response = $client->getAccessToken(SHOPLO_API_URL.SHOPLO_ACCESS_TOKEN_URI, null, $_GET['oauth_verifier']);
-
         }
         catch( \Exception $e )
         {
-            print_r($e);exit;
+            throw new ShoploException($e->getMessage());
         }
 
         unset($_SESSION['oauth_token_secret']);
