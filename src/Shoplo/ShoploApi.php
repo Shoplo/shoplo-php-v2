@@ -6,7 +6,6 @@ define('SHOPLO_API_URL','http://api.shoplo.com');
 define('SHOPLO_REQUEST_TOKEN_URI', '/services/oauth/request_token');
 define('SHOPLO_ACCESS_TOKEN_URI', '/services/oauth/access_token');
 define('SHOPLO_AUTHORIZE_URL', SHOPLO_API_URL . '/services/oauth/authorize');
-define('SHOPLO_IS_LOGGED_IN_PANEL_URL', SHOPLO_API_URL . '/services/admin/isloggedin');
 
 
 class ShoploApi
@@ -141,6 +140,12 @@ class ShoploApi
      */
     public $recurring_application_charge;
 
+
+    /**
+     * @var String
+     */
+    public $shop_domain = null;
+
     public function __construct($config, $authStore=null, $disableSession=false)
     {
         if ( !$disableSession && !session_id() )
@@ -164,21 +169,18 @@ class ShoploApi
         $this->api_key    = $config['api_key'];
         $this->secret_key = $config['secret_key'];
 
-        $shopDomain = null;
         if( isset($_GET['shop_domain']) )
         {
-            $shopDomain = addslashes($_GET['shop_domain']);
-            $_SESSION['shop_domain'] = $shopDomain;
+            $this->shop_domain = addslashes($_GET['shop_domain']);
         }
 
         $this->callback_url = (false === strpos($config['callback_url'], 'http')) ? 'http://'.$config['callback_url'] : $config['callback_url'];
 
         $this->auth_store = AuthStore::getInstance($authStore);
-
-        $this->authorize();
-
-
-        $client = $this->getClient();
+    }
+    public function initClient($token = null, $tokenSecret = null)
+    {
+        $client = $this->getClient($token, $tokenSecret);
         $this->assets          = new Assets($client);
         $this->category        = new Category($client);
         $this->cart        	   = new Cart($client);
@@ -203,11 +205,9 @@ class ShoploApi
         $this->recurring_application_charge 	= new RecurringApplicationCharge($client);
     }
 
-
-    public function authorize()
+    public function authorize($token, $tokenSecret)
     {
-
-        if ( $this->auth_store->authorize() )
+        if ( $this->auth_store->authorize($token, $tokenSecret) )
         {
             $this->oauth_token        = $this->auth_store->getOAuthToken();
             $this->oauth_token_secret = $this->auth_store->getOAuthTokenSecret();
@@ -216,21 +216,11 @@ class ShoploApi
             return true;
         }
 
-        if ( empty($_GET["oauth_token"]) )
-        {
-            $this->requestToken();
-        }
-        else
-        {
-            $this->accessToken();
-        }
-
-        $this->authorized = true;
-
-        return true;
+        $this->authorized         = false;
+        return false;
     }
 
-    private function requestToken()
+    public function requestToken()
     {
         $client = $this->getClient();
 
@@ -263,14 +253,14 @@ class ShoploApi
         exit();
     }
 
-    private function accessToken()
+    public function accessToken( $oauthToken, $oauthTokenSecret, $oauthTokenVerifier )
     {
         //  STEP 2:  Get an access token
-        $client = $this->getClient($_GET['oauth_token'], $_SESSION['oauth_token_secret']);
+        $client = $this->getClient($oauthToken, $oauthTokenSecret);
 
         try
         {
-            $response = $client->getAccessToken(SHOPLO_API_URL.SHOPLO_ACCESS_TOKEN_URI, null, $_GET['oauth_verifier']);
+            $response = $client->getAccessToken(SHOPLO_API_URL.SHOPLO_ACCESS_TOKEN_URI, null, $oauthTokenVerifier);
         }
         catch( \Exception $e )
         {
@@ -283,6 +273,8 @@ class ShoploApi
         $this->oauth_token_secret = $response['oauth_token_secret'];
 
         $this->auth_store->setAuthorizeData($response['oauth_token'], $response['oauth_token_secret']);
+
+        return $response;
     }
 
     public function getClient($token=null, $tokenSecret=null)

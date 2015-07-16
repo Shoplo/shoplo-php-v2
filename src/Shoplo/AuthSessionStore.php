@@ -15,12 +15,12 @@ class AuthSessionStore extends AuthStoreAbstract
             $oauth_token_secret,
             $authorized;
 
-    public function authorize()
+    public function authorize($token = null, $tokenSecret = null)
     {
-        if ( isset($_SESSION['oauth_token']) )
+        if ( !is_null($token) )
         {
-            $this->oauth_token = $_SESSION['oauth_token'];
-            $this->oauth_token_secret = $_SESSION['oauth_token_secret'];
+            $this->oauth_token = $token;
+            $this->oauth_token_secret = $tokenSecret;
             $this->authorized = true;
             return true;
         }
@@ -41,7 +41,7 @@ class AuthSessionStore extends AuthStoreAbstract
 
     public function setAuthorizeData($oauth_token, $oauth_token_secret)
     {
-        $this->oauth_token = $_SESSION['oauth_token'] = $oauth_token;
-        $this->oauth_token_secret = $_SESSION['oauth_token_secret'] = $oauth_token_secret;
+        $this->oauth_token = $oauth_token;
+        $this->oauth_token_secret = $oauth_token_secret;
     }
 }

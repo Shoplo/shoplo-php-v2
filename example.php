@@ -25,8 +25,23 @@ try
         'callback_url' =>  CALLBACK_URL,
     );
     $shoploApi = new Shoplo\ShoploApi($config);
+    if( !$shoploApi->authorized )
+    {
+        if( $_GET['oauth_token'] && $_GET['oauth_verifier'] && $_SESSION['oauth_token_secret'] )
+        {
+            $result = $shoploApi->accessToken($_GET['oauth_token'], $_SESSION['oauth_token_secret'], $_GET['oauth_verifier']);
 
-//    print_r($_SESSION);exit;
+            //save them and pass every time You want pass api request
+            $token = $result['oauth_token'];
+            $tokenSecret = $result['oauth_token_secret'];
+
+            $shoploApi->initClient($token, $tokenSecret);
+        }
+        else
+            $shoploApi->requestToken();
+    }
+
+
     try
     {
         # add product
