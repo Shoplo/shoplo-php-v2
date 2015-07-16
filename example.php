@@ -38,7 +38,11 @@ try
             $shoploApi->initClient($token, $tokenSecret);
         }
         else
-            $shoploApi->requestToken();
+        {
+            $uri = $shoploApi->requestToken();
+            header('Location: '.$uri);
+            exit();
+        }
     }
 
 
