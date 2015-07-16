@@ -38,18 +38,11 @@ class Resource
         $uri = '/services/'.$uri;
 
         $method = $request;
+        $body = [];
 
-        if( $method == OAUTH_HTTP_METHOD_POST)
+        if( $method == OAUTH_HTTP_METHOD_POST || $method == OAUTH_HTTP_METHOD_PUT )
         {
             $body = $fields;
-        }
-        elseif( $method == OAUTH_HTTP_METHOD_PUT )
-        {
-            $body = http_build_query($fields);
-        }
-        else
-        {
-            $body = [];
         }
 
         try
