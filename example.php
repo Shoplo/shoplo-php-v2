@@ -39,8 +39,8 @@ try
         }
         else
         {
-            $uri = $shoploApi->requestToken();
-            header('Location: '.$uri);
+            $response = $shoploApi->requestToken();
+            header('Location: '.$response['login_url']);
             exit();
         }
     }

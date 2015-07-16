@@ -247,7 +247,8 @@ class ShoploApi
         else
             $callback_uri = $this->callback_url . '?consumer_key='.rawurlencode($this->api_key);
 
-        return SHOPLO_AUTHORIZE_URL . '?oauth_token='.rawurlencode($response['oauth_token']).'&oauth_callback='.rawurlencode($callback_uri);
+        $response['login_url'] = SHOPLO_AUTHORIZE_URL . '?oauth_token='.rawurlencode($response['oauth_token']).'&oauth_callback='.rawurlencode($callback_uri);
+        return $response;
     }
 
     public function accessToken( $oauthToken, $oauthTokenSecret, $oauthTokenVerifier )
