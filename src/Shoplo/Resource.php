@@ -42,7 +42,7 @@ class Resource
 
         if( $method == OAUTH_HTTP_METHOD_POST || $method == OAUTH_HTTP_METHOD_PUT )
         {
-            $body = $fields;
+            $body = http_build_query($fields);
         }
 
         try
