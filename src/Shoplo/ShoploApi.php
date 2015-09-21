@@ -226,7 +226,7 @@ class ShoploApi
 
         try
         {
-            $response = $client->getRequestToken(SHOPLO_API_URL.SHOPLO_REQUEST_TOKEN_URI, CALLBACK_URL);
+            $response = $client->getRequestToken(SHOPLO_API_URL.SHOPLO_REQUEST_TOKEN_URI, $this->callback_url);
         }
         catch( \Exception $e )
         {
