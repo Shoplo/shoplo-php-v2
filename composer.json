@@ -1,5 +1,6 @@
 {
     "name": "shoplo/clientv2",
+    "version": "1.0",
     "autoload": {
         "psr-0": {
             "Shoplo": "src/"
