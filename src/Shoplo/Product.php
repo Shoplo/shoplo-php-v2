@@ -37,7 +37,7 @@ class Product extends Resource
 	public function modify($id, $fields, $validateSku = true)
 	{
 		$fields = array('product' => $fields, 'validate_sku'=>$validateSku);
-		return $this->send($this->prefix . "products/" . $id, 'PUT', $fields);
+		return $this->send($this->prefix . "products/" . $id . "?update_variants=1", 'PUT', $fields);
 	}
 
 	public function remove($id)
