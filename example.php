@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: grzegorzlech
- * Date: 12-08-06
- * Time: 14:00
- * To change this template use File | Settings | File Templates.
- */
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -27,7 +20,8 @@ try
     $shoploApi = new Shoplo\ShoploApi($config);
     if( !$shoploApi->authorized )
     {
-        if( $_GET['oauth_token'] && $_GET['oauth_verifier'] && $_SESSION['oauth_token_secret'] )
+
+        if( isset($_GET['oauth_token']) && $_GET['oauth_token'] && isset($_GET['oauth_verifier']) && $_GET['oauth_verifier'] && isset($_SESSION['oauth_token_secret']) && $_SESSION['oauth_token_secret'] )
         {
             $result = $shoploApi->accessToken($_GET['oauth_token'], $_SESSION['oauth_token_secret'], $_GET['oauth_verifier']);
 
@@ -44,7 +38,6 @@ try
             exit();
         }
     }
-
 
     try
     {
