@@ -2,7 +2,8 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-//ini_set('display_errors','TRUE');
+ini_set('display_errors','TRUE');
+error_reporting(E_ALL);
 
 define('SECRET_KEY','xGTta0zGZGDSJOCBeTMuOR4DnUMXCpd6');
 define('CONSUMER_KEY', 'YJIM6mdkfv2qfTWxRInC8ltd9HCkNhNs');
@@ -25,7 +26,6 @@ try
         {
             $result = $shoploApi->accessToken($_GET['oauth_token'], $_SESSION['oauth_token_secret'], $_GET['oauth_verifier']);
 
-            //save them and pass every time You want pass api request
             $token = $result['oauth_token'];
             $tokenSecret = $result['oauth_token_secret'];
 
@@ -41,7 +41,6 @@ try
 
     try
     {
-        # add product
         $productInfo = array(
             'title'             =>  'Penne Rigate makaron pióra 500g',
             'description'       =>  'Najwyższej jakości makaron wyprodukowany w 100% z semoliny z pszenicy durum. Najlepiej smakuje z sosem pomidorowym z boczkiem, mięsem lub rybami.',
@@ -73,17 +72,8 @@ try
             'tags'              =>  'penne,makaron,zdrowy'
         );
 
-//        $product = $shoploApi->product->modify(6, ['name'=>'test api v2']);
-//        print_r($product);exit;
-        # retrieve all products
         $data = $shoploApi->product->retrieve();
-        # count all products
-//        $data = $shoploApi->product->count();
-        #retrieve all categories
-//        $data = $shoploApi->category->retrieve();
-        #retrieve shop data
-//        $data = $shoploApi->shop->retrieve();
-        print_r($data);exit;
+
     }
     catch ( \Shoplo\AuthException $e )
     {
@@ -101,16 +91,24 @@ try
                 <td>description</td>
                 <td>delivery need</td>
               </tr>";
-    foreach ( $data as $d )
-    {
-        echo "<tr>
+
+    if( isset($data['products']) ){
+
+        foreach ( $data['products'] as $d ) {
+
+            if( !(isset($d['id']) && isset($d['name']) && isset($d['url']) && isset($d['description']) && isset($d['delivery_need'])) )
+                continue;
+
+            echo "<tr>
                 <td>".$d['id']."</td>
                 <td>".$d['name']."</td>
                 <td>".$d['url']."</td>
                 <td>".$d['description']."</td>
                 <td>".$d['delivery_need']."</td>
               </tr>";
+        }
     }
+
     echo "</table>";
 }
 catch ( Shoplo\ShoploException $e )
