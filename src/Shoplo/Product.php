@@ -44,4 +44,15 @@ class Product extends Resource
 	{
 		return $this->send("products/" . $id, 'DELETE');
 	}
+
+	public function createBulk($params)
+	{
+		$params = ['products' => $params];
+		return $this->send($this->prefix . "products_bulk", 'POST', $params);
+	}
+	public function updateBulk($params)
+	{
+		$params = ['products' => $params];
+		return $this->send($this->prefix . "products_bulk", 'PUT', $params);
+	}
 }
