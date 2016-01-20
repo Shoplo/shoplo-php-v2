@@ -50,6 +50,7 @@ class Product extends Resource
 		$params = ['products' => $params];
 		return $this->send($this->prefix . "products_bulk", 'POST', $params);
 	}
+
 	public function updateBulk($params)
 	{
 		$params = ['products' => $params];
