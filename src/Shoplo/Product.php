@@ -34,10 +34,11 @@ class Product extends Resource
         return $this->send("products", 'POST', $fields);
     }
 
-	public function modify($id, $fields, $validateSku = true)
+	public function modify($id, $fields, $validateSku = true, $apiV2 = false)
 	{
 		$fields = array('product' => $fields, 'validate_sku'=>$validateSku);
-		return $this->send($this->prefix . "products/" . $id . "?update_variants=1", 'PUT', $fields);
+		$apiV2Param = $apiV2 ? '&apiV2=1' : '';
+		return $this->send($this->prefix . "products/" . $id . "?update_variants=1".$apiV2Param, 'PUT', $fields);
 	}
 
 	public function remove($id)
