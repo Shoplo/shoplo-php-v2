@@ -61,6 +61,11 @@ class ShoploApi
     public $collection;
 
     /**
+     * @var Vendor
+     */
+    public $vendor;
+
+    /**
      * @var Customer
      */
     public $customer;
