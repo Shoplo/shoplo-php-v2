@@ -34,6 +34,12 @@ class Cart extends Resource
         return $this->send("carts", 'POST', $fields);
 	}
 
+	public function modify($id, $fields)
+	{
+		$fields = array('cart' => $fields);
+		return $this->send("carts/" . $id, 'PUT', $fields);
+	}
+
 	public function remove($id)
 	{
 		return $this->send("carts/" . $id, 'DELETE');
