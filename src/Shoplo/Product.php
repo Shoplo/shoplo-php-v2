@@ -28,10 +28,10 @@ class Product extends Resource
 		return ($collection_id > 0) ? $this->send($this->prefix . "products/count?collection_id=" . $collection_id . "&" . $params) : $this->send($this->prefix . "products/count?" . $params);
 	}
 
-    public function create($fields, $validateSku = true)
+    public function create($fields, $validateSku = true, $apiV2 = false)
     {
-        $fields = array('product' => $fields, 'validate_sku'=>$validateSku);
-        return $this->send("products", 'POST', $fields);
+        $fields = array('product' => $fields, 'validate_sku'=>$validateSku, 'apiV2'=>$apiV2);
+		return $this->send("products", 'POST', $fields);
     }
 
 	public function modify($id, $fields, $validateSku = true, $apiV2 = false)
