@@ -15,7 +15,8 @@ class Customer extends Resource
 			return $this->bucket['customer'];
 		} else {
 			if (!$cache || !isset($this->bucket['customer'][$id])) {
-				$result                        = $this->send($this->prefix . "/customers/" . $id);
+				$params                   = $this->prepare_params($params);
+				$result                   = empty($params) ? $this->send($this->prefix . "/customers/" . $id) : $this->send($this->prefix . "/customers/" . $id."?" . $params);
 				$this->bucket['customer'][$id] = $this->prepare_result($result);
 			}
 			return $this->bucket['customer'][$id];

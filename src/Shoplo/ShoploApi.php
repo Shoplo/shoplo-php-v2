@@ -306,6 +306,22 @@ class ShoploApi
     {
         return $this->oauth_token_secret;
     }
+    
+    /**
+	 * @return string
+	 */
+	public function getApiKey()
+	{
+		return $this->api_key;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSecretKey()
+	{
+		return $this->secret_key;
+	}
 
     public function __destruct()
     {
