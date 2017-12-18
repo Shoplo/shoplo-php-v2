@@ -121,6 +121,11 @@ class ShoploApi
     public $page;
 
     /**
+     * @var Shipping
+     */
+    public $shipping;
+
+    /**
      * @var Checkout
      */
     public $checkout;
