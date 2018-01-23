@@ -7,10 +7,12 @@ class Resource
     protected $client;
 	protected $bucket = array();
     protected $prefix = '';
+    protected $api_url;
 
-	public function __construct($client)
+	public function __construct($client, $apiUrl)
 	{
         $this->client = $client;
+        $this->api_url = $apiUrl;
 	}
 
 	protected function prepare_params($params)
@@ -51,7 +53,7 @@ class Resource
             if( !$this->client instanceof \Oauth )
                 throw new ShoploException("No authorisation");
 
-            $this->client->fetch(SHOPLO_API_URL.$uri, $body, $method);
+            $this->client->fetch($this->api_url.$uri, $body, $method);
             $result = json_decode( $this->client->getLastResponse(), true);
         }
         catch( \Exception $e )
